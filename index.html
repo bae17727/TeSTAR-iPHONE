@@ -229,7 +229,7 @@ function tryPw(){const el=$('#pw'),v=el.value.replace(/\s/g,'');if(!v)return;
   const m=$('#lm');m.textContent=WRONG[v]||'암호가 맞지 않아요';m.classList.remove('shake');void m.offsetWidth;m.classList.add('shake');el.value=''}
 /* ===== 카카오톡 ===== */
 const R1=[
-{n:'테스타',c:7,g:1,t:'오후 3:20',u:0,m:[['나','내일 헬스장 갈 사람?'],['이세진','전 내일 필테하는 날이라 패스할게요~'],['차유진','me'],['김래빈','저는 편곡할게 있어 어려울 것 같습니다'],['선아현','저요..!'],['나','가야되는 두명만 답이 없네'],['배세진','나 아직도 다리가 후들거려'],['박문대','알아서 간다'],['나','그래 그럼 주말에 등산이나 갈까?'],['배세진','...헬스장 가서 근육을 풀어야 될것 같아'],['배세진','가자'],['박문대','알아서 내일 간다는 소리였다']]},
+{n:'테스타',c:7,g:1,t:'오후 3:20',u:0,m:[['나','내일 헬스장 갈 사람?'],['동생세진이','전 내일 필테하는 날이라 패스할게요~'],['차유진','me'],['래빈이','저는 편곡할게 있어 어려울 것 같습니다'],['아현이','저요..!'],['나','가야되는 두명만 답이 없네'],['동갑세진이','나 아직도 다리가 후들거려'],['박문대','알아서 간다'],['나','그래 그럼 주말에 등산이나 갈까?'],['동갑세진이','...헬스장 가서 근육을 풀어야 될것 같아'],['동갑세진이','가자'],['박문대','알아서 내일 간다는 소리였다']]},
 {n:'매니저 형',t:'오전 9:03',u:0,m:[['매니저 형','내일 새벽 5시에 픽업 갈게'],['나','네 시간 맞춰서 애들 깨울게요']]},
 {n:'가족들',c:4,g:1,t:'오전 8:41',u:3,m:[['엄마','아들 집 언제와~'],['아빠','건강만 해라'],['여동생','올때 용돈']]},
 {n:'국대방',c:12,g:1,t:'어제',u:8,m:[['민수 형','다들 다음달 시간 되나?'],['민수 형','슬슬 정모할 때 됐는데'],['유리 누나','난됨'],['정웅이 형','난 다음달에 한국에 없어'],['선아 누나','난 가능해~ㅎㅎ'],['인철이 형','날짜 보고'],['인철이 형','막내 돼? 막내가 젤 바쁘지 ㅋㅋ'],['시현 누나','얘들아 나 결혼한다'],['시현 누나','청우야 축가 가능?']]},
@@ -284,7 +284,10 @@ function kkTog(){const e=$('#ci'),b=$('#snd');if(!b)return;const on=!!e.value.tr
 function send(i){const el=$('#ci'),v=el.value.trim();if(!v)return;R[i].t0=R[i].t0||R[i].t;R[i].m.push(['나',v,nowT()]);R[i].t='방금';R[i].live=1;$('#ms').innerHTML=rmsgs(i);el.value='';kkTog();$('#ms').scrollTop=1e5;
   eggCheck(v,i)}
 function queueEgg(E,ms){setTimeout(function t(){if($('#call').classList.contains('on'))setTimeout(t,1000);else ring(E)},ms)}
-const E1={name:'문대형',label:'휴대전화',acc:()=>setTimeout(()=>deliver('왜'),1500),rej:()=>setTimeout(()=>deliver('불러놓고 왜 안 받냐'),1500)};
+let steered=0;
+function renameMoon(){if(V!==1)return;R1.forEach(r=>{if(r.n==='박문대')r.n='문대형';r.m.forEach(x=>{if(x[0]==='박문대')x[0]='문대형'})});if(DT['박문대']){DT['문대형']=DT['박문대'];delete DT['박문대']}}
+function steer1(){const r=R1[0],keep=['동갑세진이','래빈이','차유진'],mp={'동갑세진이':'이세진a','래빈이':'김래빈'};r.m=r.m.filter(x=>x[0]==='나'||keep.includes(x[0])).map(x=>[mp[x[0]]||x[0],...x.slice(1)]);r.c=4;if(DT['테스타'])DT['스티어']=DT['테스타'];r.n='스티어';draw()}
+const E1={name:'문대형',label:'휴대전화',onRing:renameMoon,acc:()=>setTimeout(()=>deliver('왜'),1500),rej:()=>setTimeout(()=>deliver('불러놓고 왜 안 받냐'),1500)};
 const KISS=[['차유진','저 혈당 확 깼어요'],['이세진','예? 뭔소리지'],['류청우','뽀뽀가 아니라 키스? 정확히 해줘 세진아'],['박문대','형 일단 숙소로 오시죠'],['김래빈','응원합니다!'],['선아현','한정선이랑요? 아니 잘못 쳤어요 누구랑요..?']];
 const kissSeq=()=>KISS.forEach((m,k)=>setTimeout(()=>deliverTo(0,m[0],m[1]),1500+k*1500));
 const E2={name:'테스타',label:'카카오톡 음성 통화...',kk:1,acc:kissSeq,rej:kissSeq};
@@ -296,7 +299,10 @@ const dotSeq=()=>seqTo(5,[['.','테스타 선아현 씨'],['.','JSA로 와요 �
 const E3a={name:'010-482-1739',label:'휴대전화',acc:()=>{vanish();dotSeq()},rej:()=>{vanish();dotSeq()},onRing:vanish};
 const E3b={name:'문대',label:'휴대전화',acc:()=>seqTo(0,[['문대','갑자기 왜'],['문대','넌 먹기만 해라'],['문대','해도 나 있을 때 해']]),rej:()=>seqTo(0,[['세진이','문대문대 언제와?'],['세진이','빠른복귀 요망'],['문대','시동 걸었다'],['유진이','저 오늘 밥 안먹어도 돼요 배 안 고파요'],['세진형','아현아 무리하지마']])};
 let fired3=0;
-function eggCheck(v,i){if(V===7){if(i===2&&!fired7&&/바보/.test(v)){fired7=1;queueEgg(E7b,1000)}return}if(V===6){if(i===0&&!fired6&&v.includes('차유진')){fired6=1;queueEgg(E6,3000)}return}if(V===5){if(!fired5&&/상태창|시스템/.test(v)){fired5=1;queueEgg(E5,1000)}return}if(i!==0)return;if(V===3&&v.includes('요리')){queueEgg(E3b,1000);return}if(V===1&&TRIG.includes(v.replace(/\s/g,'')))queueEgg(E1,3000);else if(V===2&&v.includes('키스신'))queueEgg(E2,1500)}
+let steerD={};
+const STEER={2:[['차유진','김래빈','류청우'],{}],6:[['배세진형님','차유진','청우형님'],{'배세진형님':'이세진a형(탈퇴)','청우형님':'리더님'}],7:[['배세진형','김래빈','리더형'],{'배세진형':'약쟁이','김래빈':'래빈','리더형':'리더'}]};
+function steerV(){const [keep,mp]=STEER[V],r=R[0];r.m=r.m.filter(x=>x[0]==='나'||keep.includes(x[0])).map(x=>[mp[x[0]]||x[0],...x.slice(1)]);r.c=keep.length+1;if(DT['테스타'])DT['스티어']=DT['테스타'];r.n='스티어';draw()}
+function eggCheck(v,i){if(STEER[V]&&i===0&&!steerD[V]&&v.includes('스티어')){steerD[V]=1;setTimeout(steerV,900)}if(V===7){if(i===2&&!fired7&&/바보/.test(v)){fired7=1;queueEgg(E7b,1000)}return}if(V===6){if(i===0&&!fired6&&v.includes('차유진')){fired6=1;queueEgg(E6,3000)}return}if(V===5){if(!fired5&&/상태창|시스템/.test(v)){fired5=1;queueEgg(E5,1000)}return}if(i!==0)return;if(V===1&&!steered&&v.includes('스티어')){steered=1;setTimeout(steer1,900);return}if(V===3&&v.includes('요리')){queueEgg(E3b,1000);return}if(V===1&&TRIG.includes(v.replace(/\s/g,'')))queueEgg(E1,3000);else if(V===2&&v.includes('키스신'))queueEgg(E2,1500)}
 function badge(){const n=R.reduce((a,r)=>a+r.u,0),b=$('#kb');if(b){b.textContent=n;b.style.display=n?'flex':'none'}}
 /* ===== 전화 수신 / 알림 ===== */
 function ringKK(){const ph='M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z';
@@ -307,7 +313,7 @@ $('#call').innerHTML=`<div class="k0"><svg width="30" height="26" viewBox="0 0 3
 function acc(){let s=0;curE.acc();$('#call').innerHTML=`<div class="k1">${curE.label}</div><div class="k2">${curE.name}</div><div class="k1" id="cd" style="top:150px;font-size:20px">00:00</div><div class="bt" style="left:50%;top:calc(100% - 128px)" onclick="endc()"><div class="b" style="background:#ff453a"><svg width="36" height="36" viewBox="0 0 24 24" fill="#fff"><path transform="rotate(135 12 12)" d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>끊기</div>`;T=setInterval(()=>{s++;$('#cd').textContent=pad(s/60|0)+':'+pad(s%60)},1000)}
 function endc(){clearInterval(T);$('#call').classList.remove('on');$('#phone').classList.remove('rk')}
 function rej(){$('#call').classList.remove('on');$('#phone').classList.remove('rk');curE.rej()}
-function deliver(t){deliverTo(4,'박문대',t)}
+function deliver(t){deliverTo(4,'문대형',t)}
 function deliverTo(ri,n,t,dt){R[ri].t0=R[ri].t0||R[ri].t;R[ri].m.push([n,t,nowT(),dt]);R[ri].t='방금';
   if(curRoom===ri&&$('#ms')){R[ri].live=1;$('#ms').innerHTML=rmsgs(ri);$('#ms').scrollTop=1e5}else{R[ri].u++}
   badge();banner(n,t,ri)}
@@ -556,7 +562,23 @@ const ICON7={
 const rename7=(a,n)=>{const b=[...a];b[0]=n;return b};
 const APPS7=[rename7(APPS[0],'Calendar'),rename7(APPS[1],'Photos'),rename7(APPS[2],'Camera'),rename7(APPS[3],'Clock'),rename7(APPS[4],'Notes'),rename7(APPS[5],'Weather'),
  ['Reminders',ICON.rem,'#fff',rem,1],['YouTube',ICON.yt,'#fff',()=>yt7(),1],['Safari',ICON4.saf,'#fff',null,1],['KREAM',ICON6.kr,'#000',null,1],['Fruits Family',ICON6.ff,'#ffe4ec',null,1],['TikTok',ICON7.tt,'#000',null,1],['Twitter',ICON4.tw,'#1d9bf0',()=>tw7(),1]];
-const DOCK7=[rename7(DOCK[0],'Phone'),rename7(DOCK[1],'KakaoTalk'),rename7(APPS[6],'Instagram'),['Papago',ICON7.pap,'#fff',null,1]];
+/* 파파고 */
+const PPD="You're truly captivating, and no one can ever replace you in me.\nI think I could be that kind of person for you...\nDo you want to check? Come with me to From.";
+const PPR='당신은 정말 매력적이에요, 그리고 누구도 저 안에서 당신을 대신할 수 없어요. 저도 당신에게 그런 사람이 될 수 있을 것 같아요... 확인하시겠어요? 저와 함께 From으로 가요.';
+const PPP='유어 트룰리 캡티베이팅, 언드 노우 원 캔 에버 리플레이스 유 인 에미 아이 씽크 아이 쿠드 비 댓 카인드 어브 퍼선 포어 와이오우...';
+function ppIn(el){el.style.height='auto';el.style.height=el.scrollHeight+'px';const v=el.value,o=$('#ppo'),p=$('#ppp');
+ o.textContent=!v.trim()?'':v.includes('스티어')?'저 bad 유진이에요':(v===PPD?PPR:v);p.style.display=v===PPD?'-webkit-box':'none'}
+function ppClr(){const e=$('#ppi');e.value='';ppIn(e);e.focus()}
+const ppb=(d)=>`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const ppPills=`<div style="display:flex;gap:7px"><div style="width:46px;height:31px;border:1px solid #d9d9d9;border-radius:16px;display:flex;align-items:center;justify-content:center">${ppb('<path d="M3 9.500h3.500L12 5v14l-5.500-4.500H3z"/><path d="M15.500 9v6M18.500 7v10"/>')}</div><div style="width:31px;height:31px;border:1px solid #d9d9d9;border-radius:16px;display:flex;align-items:center;justify-content:center">${ppb('<rect x="8" y="7" width="11" height="13" rx="2"/><path d="M5 16V5a1.500 1.500 0 0 1 1.500-1.500H15"/>')}</div></div>`;
+const papago7=()=>`<div style="background:#fff;flex:1;display:flex;flex-direction:column;overflow:auto"><div style="flex:none;padding:54px 14px 0;border-bottom:1px solid #e4e4e4;height:116px;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;font-size:17px;color:#111"><span onclick="closeApp()" style="cursor:pointer;display:flex">${ppb('<path d="M20 12H4M10 6l-6 6 6 6"/>').replace('width="22" height="22"','width="26" height="26"')}</span><span style="margin-left:34px">영어 <span style="font-size:11px;color:#888">⌵</span></span><span style="width:46px;height:31px;border:1px solid #d0d0d0;border-radius:16px;display:flex;align-items:center;justify-content:center">${ppb('<path d="M4 8h15l-3-3M20 16H5l3 3"/>')}</span><span>한국어 <span style="font-size:11px;color:#888">⌵</span></span><span style="display:flex">${ppb('<circle cx="6" cy="7" r="2.200"/><path d="M8.500 7H21M3 17h12.500"/><circle cx="18" cy="17" r="2.200"/>')}</span></div>
+<div style="padding:14px 18px 14px"><div style="display:flex;justify-content:space-between;align-items:center">${ppPills}<span onclick="ppClr()" style="font-size:28px;color:#999;line-height:1;cursor:pointer;padding:0 4px">✕</span></div>
+<textarea id="ppi" oninput="ppIn(this)" spellcheck="false" style="display:block;width:100%;border:0;outline:0;resize:none;margin-top:22px;font:16.5px/20px -apple-system,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;color:#111;padding:0;height:102px;background:#fff">${PPD}</textarea>
+<div id="ppp" style="margin-top:6px;font-size:13px;line-height:21px;color:#aaa;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${PPP}</div></div>
+<div style="border-top:1px solid #e4e4e4;padding:18px 18px 20px"><div style="display:flex;justify-content:space-between;align-items:center">${ppPills}<div style="display:flex;gap:12px;align-items:center;font-size:12.500px;color:#888">용어집<span style="width:35px;height:20px;border-radius:10px;background:#e4e6ea;position:relative"><i style="position:absolute;left:1px;top:1px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px #0003"></i></span>높임말<span style="width:35px;height:20px;border-radius:10px;background:#e4e6ea;position:relative"><i style="position:absolute;left:1px;top:1px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px #0003"></i></span></div></div>
+<div id="ppo" style="margin-top:26px;font-size:22.500px;line-height:28px;color:#111;word-break:break-all;min-height:28px">${PPR}</div>
+<div style="display:flex;gap:10px;margin-top:30px">${['좋아요|<path d="M7 11v9H4v-9zM7 11l4-7c1.500 0 2.500 1 2 3l-.5 3H19a1.500 1.500 0 0 1 1.500 1.800l-1.200 6A2 2 0 0 1 17.300 20H7"/>','어색해요|<path d="M7 13V4H4v9zM7 13l4 7c1.500 0 2.500-1 2-3l-.5-3H19a1.500 1.500 0 0 0 1.500-1.800l-1.200-6A2 2 0 0 0 17.300 4H7"/>'].map(x=>{const[a,b]=x.split('|');return `<div style="height:34px;border:1px solid #d6d6d6;border-radius:17px;padding:0 14px;display:flex;align-items:center;gap:6px;font-size:13.500px;color:#222">${ppb(b).replace('width="22" height="22"','width="17" height="17"')}${a}</div>`}).join('')}</div></div></div>`;
+const DOCK7=[rename7(DOCK[0],'Phone'),rename7(DOCK[1],'KakaoTalk'),rename7(APPS[6],'Instagram'),['Papago',ICON7.pap,'#fff',papago7,1]];
 /* 트위터 작성 */
 let tw7st=0;
 const BIRD='<svg width="26" height="26" viewBox="0 0 24 24"><path fill="#1d9bf0" d="M23 4.6a9 9 0 0 1-2.6.7 4.5 4.5 0 0 0 2-2.5 9 9 0 0 1-2.9 1.1 4.5 4.5 0 0 0-7.7 4.1A12.8 12.8 0 0 1 2.5 3.300a4.500 4.500 0 0 0 1.400 6 4.500 4.500 0 0 1-2-.6v.1a4.500 4.500 0 0 0 3.600 4.400 4.500 4.500 0 0 1-2 .1 4.500 4.500 0 0 0 4.200 3.100A9 9 0 0 1 1 18.300a12.800 12.800 0 0 0 6.900 2c8.300 0 12.800-6.900 12.800-12.800v-.6A9 9 0 0 0 23 4.600z"/></svg>';
